@@ -1,58 +1,51 @@
-# Dynamic inventory
 
-## Build invetory for alm ansible projects
-To generate all ofa inventories use the script `build_inventory.sh`
+# Set environment to use awx toolkit
 
-## Setting the environment
-The python virtual env must contain `request` module
+## Build Virtual env 
+## --------------------------------
+```
+cd $HOME
+mkdir projects 
+cd projects
+/appli/alm/venv/ansible-navigator/bin/python3.11 -m venv venv
 
-## Examples
+# check that the pip.conf is correct configured and create it if not exist as follows
+mkdir -p $HOME/.config/pip
 
-### Getting Help
-```shell
-./lookup_bmc.py --help
+cat $HOME/.config/pip/pip.conf
+[global]
+index-url = https://almbinaryrepo.corp.ubp.ch/api/pypi/ubp-python-prd/simple
 
-usage: lookup_bmc.py [-h] (-d DATABASE | -s SERVERNAME | -p SERVER_PATTERN) [-g GROUP_NAME]
+[distutils]
+index-servers = local
 
-Query database or servername.
+[local]
+repository: https://almbinaryrepo.corp.ubp.ch/artifactory/api/pypi/ubp-python-dev-local
 
-options:
-  -h, --help            show this help message and exit
-  -d DATABASE, --database DATABASE
-                        Get the server for the given database.
-  -s SERVERNAME, --servername SERVERNAME
-                        Get databases on given server.
-  -p SERVER_PATTERN, --server_pattern SERVER_PATTERN
-                        List all server matching
-  -g GROUP_NAME, --group_name GROUP_NAME
-                        List all server matching
+# install the awx toolkit
+pip install --upgrade awxkit
+
+# set the vrtual env 
+. $HOME/projects/venv/activate 
+
+# export the env variables for ansible tower
+export CONTROLLER_HOST=https://tower-{evx|evz|prd}.corp.ubp.ch
+export CONTROLLER_USERNAME=<tower_username>
+export CONTROLLER_VERIFY_SSL=false
+export CONTROLLER_PASSWORD=<tower_password>
 ```
 
-#### Getting the server for a database
-```shell
-./lookup_bmc.py -d TAPEV3
 
-Servername for 'TAPEV3': lxsgvatapevx16p.corp.ubp.ch
+## Examples:
+## ----------------------------------------------------------------------------------------------------
+```
+awx job_templates list -f human --all
+awx job_templates launch  --limit lxsgvatbrprd01p --extra_vars @vars/sanity_check_fs.yml 16385 | jq .job
 ```
 
-#### Getting all database on a server
-```shell
- ./lookup_bmc.py -s lxsgvatapevx16p.corp.ubp.ch
-Databases for 'lxsgvatapevx16p.corp.ubp.ch'
-  - TAPEV1
-  - TAPEV4
-  - TAPEV3
-  - tapev2_02
-```
-
-#### Generate an yaml inventory for all GVA and EV5 
-```shell
-./lookup_bmc.py -p '.*gva.*ev5.*' -g ora_ev5
-
-ora_ev5:
-  hosts:
-    lxvgvabusev501p:
-    axvgvaoraev501p:
-    lxvgvaoraev501p:
-```
-**TIP**: you can use regexp patterns in `-p` option
+# Create database Old way example 
+## Install OFA 
+`./execute_tower_job.sh -j PRD_Ofa_Install_Oracle -t lxvgvaasdprd02p`
+## Install Oracle binaries
+`./execute_tower_job.sh -j  PRD_Oracle_Database_Server_Install -f vars/install_oracle_bin.yml -t lxvgvaasdprd02p`
+## Create database

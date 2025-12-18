@@ -1,0 +1,7 @@
+# Execute: tower-cli job launch --job-template 13175 --extra-vars  @./create_db.yml  --monitor --limit lxvgvaunbprd01s
+oracle_database_create_sid : "ECMPRDNS"
+oracle_database_create_size: 200
+oracle_database_create_oracle_home: "/oracle/o192700250415_APR2025"
+oracle_database_create_method: "migration"
+oracle_database_create_listener_port: 1555
+oracle_database_create_arch_percent_db_size: 20

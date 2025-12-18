@@ -1,0 +1,2 @@
+oracle_database_server_install_type: "specific"
+oracle_database_server_release: "19"

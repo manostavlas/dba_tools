@@ -1,0 +1,17 @@
+database:
+  db_name: "DBAEV2"
+  hostname_vip: "dbaev201-vip"
+  multitenant: "true"
+  port: 1555
+  oracle_version: 19
+  characterSet: "AL32UTF8"
+  nationalCharacterSet: "AL16UTF16"
+fs_layout:
+  - path: "/DB/DBAEV2"
+    size: "40G"
+  - path: "/backup/DBAEV2"
+    size: "50G"
+  - path: "/arch/DBAEV2"
+    size: "10G"
+  - path: "/dbvar/DBAEV2"
+    size: "10G"

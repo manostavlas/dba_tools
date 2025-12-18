@@ -1,0 +1,11 @@
+mongodb_param:
+  db_name: RRREV1
+  db_port: 27017
+mongo_filesystems_layout:
+  - path: /DB
+    size: 30G
+  - path: /backup
+    size: 30G
+  - path: /dbvar
+    size: 20G
+

@@ -1,0 +1,7 @@
+free_limit: '20'
+fs_list:
+  - /DB
+  - /backup
+  - /arch
+  - /dbvar
+
